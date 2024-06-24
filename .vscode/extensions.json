@@ -1,0 +1,17 @@
+{
+    "recommendations": [
+        "ms-toolsai.datawrangler", // Ver dataferames, listas e etc
+        "ms-python.autopep8", // Extensao do python para formatar o codigo (Autopep8)
+        "ms-python.pylint", // Extensao do python para formatar o codigo (Linting)
+        "hediet.vscode-drawio", // Desenhar diagramas
+        "ms-python.python", // Extensao do python
+        "ms-python.debugpy", // Debugar codigo python
+        "visualstudioexptteam.vscodeintellicode", // Autocompletar codigo
+        "ms-toolsai.jupyter", // Usar notebooks jupyter (arquivo .ipynb)
+        "github.copilot", // Autocompletar codigo, criar codigo e etc
+        "njpwerner.autodocstring", // Autocompletar docstrings
+        "aaron-bond.better-comments", // Visualizar cometarios de forma mais clara
+        "chdsbd.python-inline-sql-syntax", // Formatacao de linguagem SQL em python
+        "qwtel.sqlite-viewer" // Para acessar databases em sql
+    ]
+}

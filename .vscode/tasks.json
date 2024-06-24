@@ -1,0 +1,95 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    // Scripts em shell devem usar a linguagem PowerShell ver em https://learn.microsoft.com/en-us/powershell/scripting/overview
+    "version": "2.0.0",
+    "tasks": [
+        // BUILDS
+        {
+            "label": "DEV",
+            "type": "shell",
+            "dependsOn": [
+                "Criar e configurar ambiente virtual",
+                "Configurar PYTHONPATH",
+                "Adicionar arquivo credentials.py",
+                "Criar pastas adicionais",
+            ],
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "never"
+            }
+        },
+        {
+            "label": "TEST",
+            "dependsOn": [
+                "Formatar código",
+                "Criar arquivo requirements.txt"
+            ],
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "never"
+            }
+        },
+        {
+            "label": "PROD",
+            "dependsOn": [
+                "Formatar código",
+                "Criar arquivo requirements.txt"
+            ],
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "never"
+            }
+        },
+        // DEV Tasks
+        {
+            "label": "Criar e configurar ambiente virtual",
+            "type": "shell",
+            "command": "python -m venv .venv; .venv/Scripts/activate; pip install -r requirements.txt",
+        },
+        {
+            "label": "Configurar PYTHONPATH",
+            "type": "shell",
+            "command": "New-Item -Path .venv/Lib/site-packages/main.pth -ItemType file -Value $(pwd) -Force;" // ? - Para evitar problemas com o PYTHONPATH e ter que adicionar o diretório do projeto manualmente, veja mais em https://stackoverflow.com/questions/10738919/how-do-i-add-a-path-to-pythonpath-in-virtualenv#:~:text=Add%20a%20comment-,7%20Answers,-Sorted%20by%3A
+        },
+        {
+            "label": "Adicionar arquivo credentials.py",
+            "type": "shell",
+            "command": "New-Item -Path 'app/Config/credentials.py' -ItemType 'file' -Value '\"\"\"\"\"\"\"\"\"Aqui devem ser colocadas todas as credenciais utilizadas no código para evitar vazamentos\"\"\"\"\"\"\"\"\"\n' -Force"
+        },
+        {
+            "label": "Criar pastas adicionais",
+            "type": "shell",
+            "command": "New-Item -Path 'app' -Name 'assets' -ItemType 'directory' -Force; New-Item -Path 'app' -Name 'data' -ItemType 'directory' -Force"
+        },
+        // TEST Tasks
+        {
+            "label": "pylint",
+            "type": "shell",
+            "command": "pylint $(dir 'app' -r | % { if ($_.PsIsContainer) { } else { $_.FullName } }) --ignore-paths=^.*\\__pycache__\\.*$,^.*.ipynb$"
+        },
+        // PROD Tasks
+        {
+            "label": "Formatar código",
+            "type": "shell",
+            "command": "black .",
+        },
+        {
+            "label": "Criar arquivo requirements.txt",
+            "type": "shell",
+            "command": "pipreqs . --force --ignore .venv,.vscode,.github,__pycache__"
+        }
+    ]
+}
